@@ -6,11 +6,11 @@ measureTimeSec = 10;
 
 [model_ctx, startTimeSec] = model.udp.init("10.0.0.3",1234);
 %[model_ctx, startTimeSec] = model.sim.init();
+
 currentTimeSec = startTimeSec;
 
-
 kalman_ctx = kalman.init(model_ctx, currentTimeSec);
-logs_ctx = log.init(kalman_ctx, startTimeSec);
+logs_ctx = log.init(kalman_ctx, startTimeSec, measureTimeSec);
 
 prevTimeSec = 0;
 while 1

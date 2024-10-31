@@ -1,4 +1,4 @@
-function ctx = init(kalman_ctx, startTimeSec)
+function ctx = init(kalman_ctx, startTimeSec, stopTimeSec)
 ctx.i = 1;
 
 ctx.startTimeSec = startTimeSec;
@@ -12,20 +12,20 @@ ctx.state.heading = 0;
 ctx.state.roll = 0;
 ctx.state.pitch = 0;
 
+ctx.update.interval = 0.2;
+ctx.update.prevI = ctx.i;
 f = figure(1);
-% subplot(3,1,1);
-% pHeading = plot(0,0, "r-", 0, 0, "r-.");
-% subplot(3,1,2);
-% pPitch = plot(0,0, "b-", 0, 0, "b-.");
-% subplot(3,1,3);
-% pRoll = plot(0,0, "g-", 0, 0, "g-.");
 
 subplot(3,1,1);
 hold on
-pHeading(1) = plot(0,0, 'b-', "DisplayName","Estimado", "LineWidth",1);
-pHeading(2) = plot(0,0, 'r-.',"DisplayName","Real");
+pHeading(1) = animatedline(0,0,"Color",'blue', "LineStyle", "-", "DisplayName","Estimado", "LineWidth",1);
+pHeading(2) = animatedline(0,0,"Color",'blue', "LineStyle", "-.", "DisplayName","Real");
 grid on
+xlim manual
+ylim manual
+xlim([0,stopTimeSec])
 ylim([-pi,pi])
+
 %xlim([logs_ctx.T(1), logs_ctx.T(end-1)])
 title('Heading')
 xlabel('t')
@@ -33,9 +33,12 @@ ylabel('rad')
 
 subplot(3,1,2);
 hold on
-pPitch(1) = plot(0,0, 'g-', "DisplayName","Estimado","LineWidth",1);
-pPitch(2) = plot(0,0, 'r-.',"DisplayName","Real");
+pPitch(1) = animatedline(0,0, "Color",'green', "LineStyle", "-", "DisplayName","Estimado","LineWidth",1);
+pPitch(2) = animatedline(0,0,"Color",'green',"LineStyle", "-.","DisplayName","Real");
 grid on
+xlim manual
+ylim manual
+xlim([0,stopTimeSec])
 ylim([-pi,pi])
 %xlim([logs_ctx.T(1), logs_ctx.T(end-1)])
 title('Pitch')
@@ -44,8 +47,11 @@ ylabel('rad')
 
 subplot(3,1,3);
 hold on;
-pRoll(1) = plot(0,0, 'r-', "DisplayName","Estimado","LineWidth",1);
-pRoll(2) = plot(0,0, 'r-.',"DisplayName","Real");
+pRoll(1) = animatedline(0,0,"Color",'red', "LineStyle", "-", "DisplayName","Estimado","LineWidth",1);
+pRoll(2) = animatedline(0,0,"Color",'red',"LineStyle", "-.", "DisplayName","Real");
+ylim manual
+xlim manual
+xlim([0,stopTimeSec])
 ylim([-pi,pi])
 %xlim([logs_ctx.T(1), logs_ctx.T(end-1)])
 grid on
@@ -53,7 +59,7 @@ title('Roll')
 xlabel('t')
 ylabel('rad')
 
-legend
+%legend
 
 ctx.fig = f;
 ctx.pRoll = pRoll;

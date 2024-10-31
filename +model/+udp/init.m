@@ -11,7 +11,7 @@ ctx.update = @model.udp.update;
 ctx.deinit = @model.udp.deinit;
 
 while size(ctx.u.UserData,1)<1
-    pause(0.0001)
+    pause(0.001)
 end
 
 data = ctx.u.UserData(1,:);
