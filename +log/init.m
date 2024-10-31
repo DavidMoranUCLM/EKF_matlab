@@ -8,7 +8,9 @@ ctx.P_current = zeros(size(kalman_ctx.P_current,1),size(kalman_ctx.P_current,2),
 ctx.a = zeros(size(kalman_ctx.a, 1), 1);
 ctx.w = zeros(size(kalman_ctx.w, 1), 1);
 ctx.m = zeros(size(kalman_ctx.m, 1), 1);
-ctx.state = zeros(3,1);
+ctx.state.heading = 0;
+ctx.state.roll = 0;
+ctx.state.pitch = 0;
 
 f = figure(1);
 % subplot(3,1,1);

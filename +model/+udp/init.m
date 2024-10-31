@@ -4,7 +4,7 @@ ctx.startTimeSec = posixtime(datetime('now'));
 
 u = udpport("LocalHost",host,"LocalPort", port);
 configureTerminator(u, "CR/LF");
-configureCallback(u, "terminator",@callback)
+configureCallback(u, "terminator", @callback)
 
 ctx.u = u;
 ctx.update = @model.udp.update;
@@ -23,7 +23,11 @@ end
 
 function callback(u,~)
 
-data = u.readline.split(',')';
-u.UserData(end+1,:) = [double(data(1))/1000, double(data(2:end))];
+data = double(u.readline.split(',')');
+u.UserData(end+1,:) = [ms2sec(data(1)), data(2:end)];
 
+end
+
+function out = ms2sec(t)
+    out = t/1000;
 end

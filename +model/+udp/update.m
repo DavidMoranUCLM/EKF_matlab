@@ -10,9 +10,9 @@ ctx.u.UserData = ctx.u.UserData(2:end,:);
 
 T = (data(1)-ctx.startTimeSec);
 
-state(1) = deg2rad(data(4));
-state(2) = deg2rad(data(3));
-state(3) = deg2rad(data(2))-pi;
+state.pitch = deg2rad(data(4));
+state.roll = deg2rad(data(3));
+state.heading = deg2rad(data(2))-pi;
 
 
 measures.m = data(5:7)';

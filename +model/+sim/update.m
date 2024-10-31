@@ -1,7 +1,6 @@
 function [measures,state, t] = update(ctx)
 
-T = posixtime(datetime('now'));
-t = T-ctx.startTimeSec;
+t = posixtime(datetime('now')) - ctx.startTimeSec;
 
 lat = ctx.lat;
 
@@ -20,6 +19,8 @@ measures.a = R.rotm*[0;0;9.8] + randn(3,1)/10;
 measures.m = R.rotm*[cosd(lat);0;-sind(lat)] + randn(3,1)/5;
 measures.w = [w_roll;w_pitch;w_heading] + randn(3,1)/15;
 
-state = [roll;pitch;heading];
+state.roll = roll;
+state.pitch = pitch;
+state.heading = heading;
 
 end

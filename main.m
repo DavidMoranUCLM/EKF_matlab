@@ -1,8 +1,7 @@
 clear;
 %rng("default")
 
-%startTimeSec = posixtime(datetime('now'));
-%currentTimeSec = posixtime(datetime('now'));
+
 measureTimeSec = 10;
 
 [model_ctx, startTimeSec] = model.udp.init("10.0.0.3",1234);
@@ -38,6 +37,8 @@ end
 drawnow
 figure(2)
 plot(diff(logs_ctx.T))
-%log.plots(logs_ctx);
+title("Time step")
+xlabel("Step")
+ylabel("\Deltat (s)")
 
 model_ctx.deinit(model_ctx);
