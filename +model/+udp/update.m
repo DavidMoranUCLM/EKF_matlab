@@ -10,14 +10,17 @@ ctx.u.UserData = ctx.u.UserData(2:end,:);
 
 T = (data(1)-ctx.startTimeSec);
 
-state.pitch = -deg2rad(data(4));
+state.pitch = deg2rad(data(4));
 state.roll = -deg2rad(data(3));
-state.heading = (deg2rad(data(2))-pi);
+state.heading = (-deg2rad(data(2))+2*pi);
 
 
 measures.m = data(5:7)';
+measures.m(2) = -measures.m(2);
 measures.a = data(8:10)';
+measures.a(2) = -measures.a(2);
 measures.w = data(11:13)';
+measures.w(2) = -measures.w(2);
 
 
 % state = deg2rad(data([11:13])');
