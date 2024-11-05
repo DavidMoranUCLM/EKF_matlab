@@ -1,4 +1,7 @@
-function ctx = init(kalman_ctx, startTimeSec, stopTimeSec)
+function ctx = init(kalman_ctx, startTimeSec, stopTimeSec, xSpeed)
+
+ctx.deinit = @log.deinit;
+
 ctx.i = 1;
 
 ctx.startTimeSec = startTimeSec;
@@ -12,10 +15,22 @@ ctx.state.heading = 0;
 ctx.state.roll = 0;
 ctx.state.pitch = 0;
 
-ctx.update.interval = 0.2;
+ctx.update.interval = .25;
 ctx.update.prevI = ctx.i;
-f = figure(1);
+ctx.updateXSpeed = xSpeed;
 
+[pHeading, pPitch, pRoll] = createEulerStateplots(stopTimeSec);
+
+
+ctx.pRoll = pRoll;
+ctx.pHeading = pHeading;
+ctx.pPitch = pPitch;
+
+end
+
+function [pHeading, pPitch, pRoll] = createEulerStateplots(stopTimeSec)
+
+figure(1);
 subplot(3,1,1);
 hold on
 pHeading(1) = animatedline(0,0,"Color",'blue', "LineStyle", "-", "DisplayName","Estimado", "LineWidth",1);
@@ -60,10 +75,4 @@ xlabel('t')
 ylabel('rad')
 
 %legend
-
-ctx.fig = f;
-ctx.pRoll = pRoll;
-ctx.pHeading = pHeading;
-ctx.pPitch = pPitch;
-
 end

@@ -1,6 +1,6 @@
 function [measures,state, t] = update(ctx)
 
-t = posixtime(datetime('now')) - ctx.startTimeSec;
+t = (posixtime(datetime('now')) - ctx.startTimeSec)*ctx.xSpeed;
 
 lat = ctx.lat;
 

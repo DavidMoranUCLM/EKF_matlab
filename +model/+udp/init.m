@@ -1,5 +1,6 @@
 function [ctx, startTimeSec] = init(host, port)
 
+ctx.xSpeed = 1;
 ctx.startTimeSec = posixtime(datetime('now'));
 
 u = udpport("LocalHost",host,"LocalPort", port);

@@ -44,9 +44,9 @@ end
 
 function ctx = stdDevSet(ctx)
 
-    ctx.stdDev.a = 0.5.^2;
-    ctx.stdDev.m = 0.8.^2;
-    ctx.stdDev.w = 0.3.^2;
+    ctx.stdDev.a = 5.^2;
+    ctx.stdDev.m = 5.^2;
+    ctx.stdDev.w = 5.^2;
 
 end
 

@@ -11,25 +11,24 @@ logs_ctx.state.pitch(i) = state.pitch;
 logs_ctx.state.heading(i) = state.heading;
 
 prevI = logs_ctx.update.prevI;
-if logs_ctx.T(i)-logs_ctx.T(prevI) > logs_ctx.update.interval
+if logs_ctx.T(i)-logs_ctx.T(prevI) > logs_ctx.update.interval*logs_ctx.updateXSpeed
 
-eulerAng = so3(logs_ctx.q_current(:,prevI:i)',"quat").eul;
-
-currentRoll = eulerAng(:,3);
-currentPitch = eulerAng(:,2);
-currentHeading = eulerAng(:,1);
-
-addpoints(logs_ctx.pHeading(1), logs_ctx.T(prevI:i), currentHeading);
-addpoints(logs_ctx.pHeading(2), logs_ctx.T(prevI:i), logs_ctx.state.heading(prevI:i));
-
-addpoints(logs_ctx.pPitch(1), logs_ctx.T(prevI:i), currentPitch);
-addpoints(logs_ctx.pPitch(2), logs_ctx.T(prevI:i), logs_ctx.state.pitch(prevI:i));
-
-addpoints(logs_ctx.pRoll(1), logs_ctx.T(prevI:i), currentRoll);
-addpoints(logs_ctx.pRoll(2), logs_ctx.T(prevI:i), logs_ctx.state.roll(prevI:i));
-
-logs_ctx.update.prevI = i;
-
+    eulerAng = so3(logs_ctx.q_current(:,prevI:i)',"quat").eul;
+    
+    currentRoll = eulerAng(:,3);
+    currentPitch = eulerAng(:,2);
+    currentHeading = eulerAng(:,1);
+    
+    addpoints(logs_ctx.pHeading(1), logs_ctx.T(prevI:i), currentHeading);
+    addpoints(logs_ctx.pHeading(2), logs_ctx.T(prevI:i), logs_ctx.state.heading(prevI:i));
+    
+    addpoints(logs_ctx.pPitch(1), logs_ctx.T(prevI:i), currentPitch);
+    addpoints(logs_ctx.pPitch(2), logs_ctx.T(prevI:i), logs_ctx.state.pitch(prevI:i));
+    
+    addpoints(logs_ctx.pRoll(1), logs_ctx.T(prevI:i), currentRoll);
+    addpoints(logs_ctx.pRoll(2), logs_ctx.T(prevI:i), logs_ctx.state.roll(prevI:i));
+    
+    logs_ctx.update.prevI = i;
 
 end
 
