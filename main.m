@@ -21,23 +21,26 @@ while 1
 
     logs_ctx = log.update(logs_ctx, kalman_ctx, state);
 
-    delayUntil(prevTimeSec,currentTimeSec);
-
-    prevTimeSec = currentTimeSec;
+    
     if currentTimeSec>measureTimeSec
         break
     end
+    
+
+    delayUntil(0.01, prevTimeSec, model_ctx.getTime(model_ctx));
+    prevTimeSec = currentTimeSec;
 end
 
 model_ctx.deinit(model_ctx);
 logs_ctx.deinit(logs_ctx);
 
-function delayUntil(prevTimeSec, currentTimeSec)
-Tstop = 0.05-(currentTimeSec-prevTimeSec);
+function delayUntil(tStepSeconds, prevTimeSec, currentTimeSec)
+Tstop = tStepSeconds-(currentTimeSec-prevTimeSec);
 if Tstop > 0
     pause(Tstop);
 else
-    %warning("Lost %f seconds", -Tstop);
+    %warning("Lost %f seconds", Tstop);
+    pause(0.000001);
 end
 
 

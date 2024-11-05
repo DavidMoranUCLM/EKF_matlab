@@ -10,6 +10,7 @@ configureCallback(u, "terminator", @callback)
 ctx.u = u;
 ctx.update = @model.udp.update;
 ctx.deinit = @model.udp.deinit;
+ctx.getTime = @model.udp.getTime;
 
 while size(ctx.u.UserData,1)<1
     pause(0.001)

@@ -4,11 +4,10 @@ function [measures,state,T] = update(ctx)
 while size(ctx.u.UserData,1)<1
     pause(0.0001)
 end
-
 data = ctx.u.UserData(1,:);
 ctx.u.UserData = ctx.u.UserData(2:end,:);
 
-T = (data(1)-ctx.startTimeSec);
+T = ctx.getTime(ctx);
 
 state.pitch = deg2rad(data(4));
 state.roll = -deg2rad(data(3));

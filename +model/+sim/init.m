@@ -6,5 +6,6 @@ ctx.lat = 39.96;
 ctx.xSpeed = xSpeed;
 ctx.update = @model.sim.update;
 ctx.deinit = @(x) x;
+ctx.getTime = @model.sim.getTime;
 end
 

@@ -3,9 +3,13 @@ i = logs_ctx.i;
 logs_ctx.T(i) = kalman_ctx.t;
 logs_ctx.q_current(:,i) = kalman_ctx.q_current;
 logs_ctx.P_current(:,:,i) = kalman_ctx.P_current;
-logs_ctx.a(:,i) = kalman_ctx.a;
-logs_ctx.w(:,i) = kalman_ctx.w;
-logs_ctx.m(:,i) = kalman_ctx.m;
+logs_ctx.measured.a(:,i) = kalman_ctx.a;
+logs_ctx.measured.w(:,i) = kalman_ctx.w;
+logs_ctx.measured.m(:,i) = kalman_ctx.m;
+
+logs_ctx.state.a(:,i) = state.a;
+logs_ctx.state.w(:,i) = state.w;
+logs_ctx.state.m(:,i) = state.m;
 logs_ctx.state.roll(i) = state.roll;
 logs_ctx.state.pitch(i) = state.pitch;
 logs_ctx.state.heading(i) = state.heading;

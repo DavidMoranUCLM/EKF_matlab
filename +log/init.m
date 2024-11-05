@@ -8,9 +8,13 @@ ctx.startTimeSec = startTimeSec;
 ctx.T = zeros(1,1);
 ctx.q_current = zeros(size(kalman_ctx.q_current,1),1);
 ctx.P_current = zeros(size(kalman_ctx.P_current,1),size(kalman_ctx.P_current,2),1);
-ctx.a = zeros(size(kalman_ctx.a, 1), 1);
-ctx.w = zeros(size(kalman_ctx.w, 1), 1);
-ctx.m = zeros(size(kalman_ctx.m, 1), 1);
+ctx.measured.a = zeros(size(kalman_ctx.a, 1), 1);
+ctx.measured.w = zeros(size(kalman_ctx.w, 1), 1);
+ctx.measured.m = zeros(size(kalman_ctx.m, 1), 1);
+
+ctx.state.a = zeros(size(kalman_ctx.a, 1), 1);
+ctx.state.w = zeros(size(kalman_ctx.w, 1), 1);
+ctx.state.m = zeros(size(kalman_ctx.m, 1), 1);
 ctx.state.heading = 0;
 ctx.state.roll = 0;
 ctx.state.pitch = 0;

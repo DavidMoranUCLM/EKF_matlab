@@ -1,6 +1,7 @@
 function ctx = initConditions(ctx, model_ctx, currentTimeSec)
     ctx = qEstimate(ctx, model_ctx);
     ctx = PEstimate(ctx);
+
     ctx = stdDevSet(ctx);
 
 end
@@ -44,9 +45,9 @@ end
 
 function ctx = stdDevSet(ctx)
 
-    ctx.stdDev.a = 5.^2;
-    ctx.stdDev.m = 5.^2;
-    ctx.stdDev.w = 5.^2;
+    ctx.stdDev.a = 1.5.^2;
+    ctx.stdDev.m = 1.8.^2;
+    ctx.stdDev.w = 1.3.^2;
 
 end
 
