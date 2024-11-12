@@ -2,20 +2,19 @@ clear;
 %rng("default")
 
 
-measureTimeSec = 50;
+measureTimeSec = 20;
 
-%[model_ctx, startTimeSec] = model.udp.init("10.0.0.3",1234);
-[model_ctx, startTimeSec] = model.sim.init(5);
+[model_ctx, startTimeSec] = model.udp.init("10.0.0.3",1234);
+%[model_ctx, startTimeSec] = model.sim.init(1);
 
-currentTimeSec = startTimeSec;
 
-kalman_ctx = kalman.init(model_ctx, currentTimeSec);
+kalman_ctx = kalman.init(model_ctx);
 logs_ctx = log.init(kalman_ctx, startTimeSec, measureTimeSec, model_ctx.xSpeed);
 
 prevTimeSec = 0;
 while 1
 
-    [measures, state, currentTimeSec] = model_ctx.update(model_ctx);
+    [model_ctx, measures, state, currentTimeSec] = model_ctx.update(model_ctx);
 
     kalman_ctx = kalman.step(kalman_ctx, measures, currentTimeSec);
 
@@ -28,7 +27,7 @@ while 1
     
 
     delayUntil(0.01, prevTimeSec, model_ctx.getTime(model_ctx));
-    prevTimeSec = currentTimeSec;
+    prevTimeSec = model_ctx.getTime(model_ctx);
 end
 
 model_ctx.deinit(model_ctx);

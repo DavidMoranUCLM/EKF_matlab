@@ -1,4 +1,4 @@
-function ctx = initConditions(ctx, model_ctx, currentTimeSec)
+function ctx = initConditions(ctx, model_ctx)
     ctx = qEstimate(ctx, model_ctx);
     ctx = PEstimate(ctx);
 
@@ -11,7 +11,7 @@ end
 function ctx = qEstimate(ctx, model_ctx)
     accMagAngTol = cosd(10);
 
-    [measures, state, ctx.t] = model_ctx.update(model_ctx);
+    [model_ctx, measures, state, ctx.t] = model_ctx.update(model_ctx);
     m = measures.m/norm(measures.m);
     a = measures.a/norm(measures.a);
     dotProduct = abs(dot(a, m));

@@ -1,7 +1,7 @@
-function [measures,state,T] = update(ctx)
+function [ctx,measures,state,T] = update(ctx)
 %UPDATE Summary of this function goes here
 %   Detailed explanation goes here
-while size(ctx.u.UserData,1)<1
+while size(ctx.u.UserData,1)<2
     pause(0.0001)
 end
 data = ctx.u.UserData(1,:);
@@ -11,7 +11,7 @@ T = ctx.getTime(ctx);
 
 state.pitch = deg2rad(data(4));
 state.roll = -deg2rad(data(3));
-state.heading = (-deg2rad(data(2))+2*pi);
+state.heading = (-deg2rad(data(2))+2*pi-pi/2);
 
 
 measures.m = data(5:7)';
@@ -21,6 +21,9 @@ measures.a(2) = -measures.a(2);
 measures.w = data(11:13)';
 measures.w(2) = -measures.w(2);
 
+state.a = measures.a;
+state.w = measures.w;
+state.m = measures.m;
 
 % state = deg2rad(data([11:13])');
 % 

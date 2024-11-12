@@ -1,4 +1,4 @@
-function kalman_ctx = init(model_ctx, currentTimeSec)
+function kalman_ctx = init(model_ctx)
 kalman_ctx.q_prev = zeros(4,1);
 kalman_ctx.q_current = zeros(4,1);
 kalman_ctx.q_est = zeros(4,1);
@@ -16,5 +16,5 @@ kalman_ctx.h = 1e-8;
 kalman_ctx.t = 0;
 kalman_ctx.t_prev = 0;
 kalman_ctx.lat = 39.96;
-kalman_ctx = kalman.initConditions(kalman_ctx, model_ctx, currentTimeSec);
+kalman_ctx = kalman.initConditions(kalman_ctx, model_ctx);
 end

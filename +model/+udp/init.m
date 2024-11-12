@@ -12,7 +12,7 @@ ctx.update = @model.udp.update;
 ctx.deinit = @model.udp.deinit;
 ctx.getTime = @model.udp.getTime;
 
-while size(ctx.u.UserData,1)<1
+while size(ctx.u.UserData,1)<2
     pause(0.001)
 end
 

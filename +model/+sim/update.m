@@ -1,6 +1,8 @@
-function [measures,state, t] = update(ctx)
+function [ctx,measures,state, t] = update(ctx)
 
+ctx.currentTimeSec = ctx.getTime(ctx)+ctx.stepTimeSec*ctx.xSpeed;
 t = ctx.getTime(ctx);
+
 
 lat = ctx.lat;
 
