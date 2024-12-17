@@ -17,12 +17,12 @@ w_heading = (heading-model.sim.heading(t-delta_t)) / (delta_t);
 
 R = so3([heading,pitch,roll],"eul",'ZYX');
 
-measures.a = R.rotm*[0;0;9.8] + randn(3,1)*0.5;
-measures.m = R.rotm*[cosd(lat);0;-sind(lat)] + randn(3,1)*0.8;
-measures.w = [w_roll;w_pitch;w_heading] + randn(3,1)*0.3;
+measures.a = R.rotm'*[0;0;9.8];% + randn(3,1)*0.5;
+measures.m = R.rotm'*[cosd(lat);0;-sind(lat)];% + randn(3,1)*0.8;
+measures.w = [w_roll;w_pitch;w_heading];% + randn(3,1)*0.3;
 
-state.a = R.rotm*[0;0;9.8];
-state.m = R.rotm*[cosd(lat);0;-sind(lat)];
+state.a = R.rotm'*[0;0;9.8];
+state.m = R.rotm'*[cosd(lat);0;-sind(lat)];
 state.w = [w_roll;w_pitch;w_heading];
 state.roll = roll;
 state.pitch = pitch;

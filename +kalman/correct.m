@@ -60,7 +60,7 @@ end
 
 function h = get_hPrimitive(q, lat)
 
-    R = so3(q',"quat").rotm;
+    R = so3(q',"quat").rotm';
 
     expected_g = R*[0; 0; 9.8];
     expected_r = R*[cosd(lat); 0; -sind(lat)];
