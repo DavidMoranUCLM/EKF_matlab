@@ -12,7 +12,8 @@ function ctx = qEst(ctx)
     order = ctx.estimateOrder;
     deltaT = ctx.t-ctx.t_prev;
 
-    ctx.q_est = qEstPrimitive(w, q0, order, deltaT);
+    %ctx.q_est = qEstPrimitive(w, q0, order, deltaT);
+    ctx.q_est = (eye(4) + utils.extendedSkewMatrix(w).*deltaT./2)*q0;
 end
 
 
@@ -34,14 +35,15 @@ function F = getF(ctx)
     deltaT = ctx.t-ctx.t_prev;
     h = ctx.h;
 
-    f = @(X) qEstPrimitive(w,X,order,deltaT);
-    F = utils.jacobian(f, q0, h);
+    %f = @(X) qEstPrimitive(w,X,order,deltaT);
+    %F = utils.jacobian(f, q0, h);
+    F = eye(4) + (deltaT/2)*utils.extendedSkewMatrix(w);
 end
 
 function Q = getQ(ctx)
     sigma_omega = ctx.stdDev.w;
     W = getW(ctx);
-    Q = sigma_omega*sigma_omega*(W*W');
+    Q = W*(eye(3).*sigma_omega)*W';
 end
 
 
@@ -52,8 +54,12 @@ function W = getW(ctx)
     deltaT = ctx.t-ctx.t_prev;
     h = ctx.h;
 
-    f = @(X) qEstPrimitive(X,q0,order,deltaT);
-    W = utils.jacobian(f, w, h);
+    %f = @(X) qEstPrimitive(X,q0,order,deltaT);
+    %W = utils.jacobian(f, w, h);
+    W = (deltaT/2).*[-q0(2), -q0(3), -q0(4);
+                     q0(1), -q0(4), q0(3);
+                     q0(4), q0(1), -q0(2);
+                     -q0(3), q0(2), q0(1)];
 
 end
 

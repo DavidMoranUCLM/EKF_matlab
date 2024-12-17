@@ -42,8 +42,18 @@ function H = get_H(ctx)
     h = ctx.h;
     q = ctx.q_est;
 
-    f = @(X) get_hPrimitive(X, ctx.lat);
-    H = utils.jacobian(f,q,h);
+    %f = @(X) get_hPrimitive(X, ctx.lat);
+    %H = utils.jacobian(f,q,h);
+    g = [0; 0; 9.8];
+    r = [cosd(ctx.lat); 0; -sind(ctx.lat)];
+    ug = cross(g,q(2:4));
+    ur = cross(r,q(2:4));
+
+    H_l = [ug; ur];
+    H_r_top = utils.skewMatrix(ug+q(1)*g) + dot(q(2:4),g)*eye(3) - g*q(2:4)';
+    H_r_bottom = utils.skewMatrix(ur+q(1)*r) + dot(q(2:4),r)*eye(3) - r*q(2:4)';
+
+    H = 2*[H_l [H_r_top; H_r_bottom]];
 
 end
 
