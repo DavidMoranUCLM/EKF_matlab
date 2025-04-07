@@ -1,5 +1,4 @@
 function ctx = estimate(ctx)
-
     ctx = qEst(ctx);
     ctx = PEst(ctx);
 
@@ -9,72 +8,54 @@ end
 function ctx = qEst(ctx)
     w = ctx.w;
     q0 = ctx.q_prev;
-    order = ctx.estimateOrder;
     deltaT = ctx.t-ctx.t_prev;
-
-    %ctx.q_est = qEstPrimitive(w, q0, order, deltaT);
-    ctx.q_est = (eye(4) + utils.extendedSkewMatrix(w).*deltaT./2)*q0;
+    ctx.q_est = kalman.qEstimate(w,deltaT,q0);
 end
 
 
 function ctx = PEst(ctx)
 
-    P0 = ctx.P_prev;
+    ctx = getF(ctx);
+    ctx = getQ(ctx);
 
-    F = getF(ctx);
-    Q = getQ(ctx);
-
-    ctx.P_est = F*P0*F' + Q;
+    ctx.P_est = kalman.PEstimate(ctx.P_prev,ctx.F,ctx.Q);
 
 end
 
-function F = getF(ctx)
+
+
+function ctx = getF(ctx)
     w = ctx.w;
-    q0 = ctx.q_prev;
-    order = ctx.estimateOrder;
     deltaT = ctx.t-ctx.t_prev;
-    h = ctx.h;
-
-    %f = @(X) qEstPrimitive(w,X,order,deltaT);
-    %F = utils.jacobian(f, q0, h);
-    F = eye(4) + (deltaT/2)*utils.extendedSkewMatrix(w);
+    ctx.F = kalman.get_F(w,deltaT);
 end
 
-function Q = getQ(ctx)
+function ctx = getQ(ctx)
     sigma_omega = ctx.stdDev.w;
-    W = getW(ctx);
-    Q = W*(eye(3).*sigma_omega)*W';
+    ctx = getW(ctx);
+    ctx.Q = kalman.get_Q(ctx.W, sigma_omega);
 end
 
 
-function W = getW(ctx)
-    w = ctx.w;
+function ctx = getW(ctx)
     q0 = ctx.q_prev;
-    order = ctx.estimateOrder;
     deltaT = ctx.t-ctx.t_prev;
-    h = ctx.h;
-
-    %f = @(X) qEstPrimitive(X,q0,order,deltaT);
-    %W = utils.jacobian(f, w, h);
-    W = (deltaT/2).*[-q0(2), -q0(3), -q0(4);
-                     q0(1), -q0(4), q0(3);
-                     q0(4), q0(1), -q0(2);
-                     -q0(3), q0(2), q0(1)];
+    ctx.W = kalman.get_W(q0,deltaT);
 
 end
 
 
 
-function q_est = qEstPrimitive(w,q0,order,deltaT)
-   
-    qOmega = quaternion(0, w(1), w(2), w(3));
-    qOmegaMat = utils.quat2mat(qOmega);
-
-    q1Mat = eye(4);
-    for o=1:order 
-        q1Mat = q1Mat + (qOmegaMat^o)*(deltaT^o)/(factorial(o)*2^o);
-    end
-
-    q_est = q1Mat*q0;
-
-end
+% function q_est = qEstPrimitive(w,q0,order,deltaT)
+% 
+%     qOmega = quaternion(0, w(1), w(2), w(3));
+%     qOmegaMat = utils.quat2mat(qOmega);
+% 
+%     q1Mat = eye(4);
+%     for o=1:order 
+%         q1Mat = q1Mat + (qOmegaMat^o)*(deltaT^o)/(factorial(o)*2^o);
+%     end
+% 
+%     q_est = q1Mat*q0;
+% 
+% end

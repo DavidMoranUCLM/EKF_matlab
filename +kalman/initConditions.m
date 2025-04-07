@@ -14,25 +14,12 @@ function ctx = qEstimate(ctx, model_ctx)
     [model_ctx, measures, state, ctx.t] = model_ctx.update(model_ctx);
     m = measures.m/norm(measures.m);
     a = measures.a/norm(measures.a);
-    dotProduct = abs(dot(a, m));
-    modulesProduct = norm(a)*norm(m);
-
-    while(dotProduct/modulesProduct > accMagAngTol)
-        disp('Reintentando Obtener q0')
-        [measures, state, ctx.t] = model_ctx.update(model_ctx);
-        m = measures.m;
-        a = measures.a;
-        dotProduct = abs(dot(a, m));
-        modulesProduct = norm(a)*norm(m);
-        disp(dotProduct/modulesProduct)
-        
-    end
 
     magAccCrossProduct = cross(a,m);
-    R_aprox = [m/norm(m), magAccCrossProduct/norm(magAccCrossProduct)  ,a/norm(a)];
+    R_aprox = [cross(magAccCrossProduct,a), magAccCrossProduct,a];
     q = recoverQuatFromRot(R_aprox);
 
-    ctx.q_current = q;
+    ctx.q_current = [1;0;0;0];%q;
 
 
 end
@@ -45,9 +32,9 @@ end
 
 function ctx = stdDevSet(ctx)
 
-    ctx.stdDev.a = 1.5.^2;
-    ctx.stdDev.m = 1.8.^2;
-    ctx.stdDev.w = 1.3.^2;
+    ctx.stdDev.a = 0.5*0.5;
+    ctx.stdDev.m = 1.5*1.5;
+    ctx.stdDev.w = 0.3*0.3;
 
 end
 

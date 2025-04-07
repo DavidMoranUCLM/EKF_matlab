@@ -1,80 +1,56 @@
 function ctx = correct(ctx)
 
-    z = [ctx.a;ctx.m/norm(ctx.m)];
-    h = get_h(ctx);
-    v = z - h;
+z = [ctx.a/norm(ctx.a);ctx.m./norm(ctx.m)];
+h = get_h(ctx);
+v = z - h;
 
-    H = get_H(ctx);
-    K = get_K(ctx, H);
+ctx.R = get_R(ctx);
+ctx = get_H(ctx);
+ctx.S = get_S(ctx);
 
-    ctx.q_current = ctx.q_est + K*v;
-    ctx.P_current = (eye(4) - K*H)*ctx.P_est;
+ctx = get_K(ctx);
+
+
+ctx.q_current = kalman.qCorrect(ctx.q_est, ctx.K, v);
+ctx.P_current = kalman.correctP(ctx.K,ctx.H,ctx.P_est, ctx.R);
 
 
 end
 
-function K = get_K(ctx, H)
-    
-    P = ctx.P_est;
-    R = get_R(ctx);
-    S = get_S(ctx, H, R);
+function ctx = get_K(ctx)
 
-
-    K = P*H'*inv(S);
+ctx.invS = inv(ctx.S);
+ctx.K = kalman.get_K(ctx.P_est, ctx.H, ctx.invS);
 
 end
 
-function S = get_S(ctx, H, R)
+function S = get_S(ctx)
 
-    P = ctx.P_est;
-    S = H*P*H' + R;
+S = kalman.get_S(ctx.P_est, ctx.H, ctx.R);
 
 end
 
 function h = get_h(ctx)
 
-    h = get_hPrimitive(ctx.q_est, ctx.lat);
+g = [0; 0; 1];
+r = [sind(ctx.inc);cosd(ctx.lat)*cosd(ctx.inc);-sind(ctx.lat)*cosd(ctx.inc)];
+
+h = kalman.get_h(ctx.q_est, g, r);
 
 end
 
-function H = get_H(ctx)
-    
-    h = ctx.h;
-    q = ctx.q_est;
+function ctx = get_H(ctx)
 
-    %f = @(X) get_hPrimitive(X, ctx.lat);
-    %H = utils.jacobian(f,q,h);
-    g = [0; 0; 9.8];
-    r = [cosd(ctx.lat); 0; -sind(ctx.lat)];
-    ug = cross(g,q(2:4));
-    ur = cross(r,q(2:4));
+g = [0; 0; 1];
+r = [sind(ctx.inc);cosd(ctx.lat)*cosd(ctx.inc);-sind(ctx.lat)*cosd(ctx.inc)];
 
-    H_l = [ug; ur];
-    H_r_top = utils.skewMatrix(ug+q(1)*g) + dot(q(2:4),g)*eye(3) - g*q(2:4)';
-    H_r_bottom = utils.skewMatrix(ur+q(1)*r) + dot(q(2:4),r)*eye(3) - r*q(2:4)';
-
-    H = 2*[H_l [H_r_top; H_r_bottom]];
-
-end
-
-
-function h = get_hPrimitive(q, lat)
-
-    R = so3(q',"quat").rotm';
-
-    expected_g = R*[0; 0; 9.8];
-    expected_r = R*[cosd(lat); 0; -sind(lat)];
-
-    h = [expected_g;expected_r];
+ctx.H = kalman.get_H(ctx.q_est, g, r);
 
 end
 
 
 function R = get_R(ctx)
-    stdDev_m = ctx.stdDev.m;
-    stdDev_a = ctx.stdDev.a;
-    
-    d = [ones(1,3)*stdDev_a, ones(1,3)*stdDev_m];
-    R = diag(d);
-
+R = kalman.get_R(ctx.stdDev.a, ctx.stdDev.m);
 end
+
+
