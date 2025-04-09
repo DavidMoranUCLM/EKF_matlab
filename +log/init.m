@@ -30,7 +30,9 @@ ctx.state.heading = 0;
 ctx.state.roll = 0;
 ctx.state.pitch = 0;
 
-ctx.update.interval = .25;
+ctx.statePrecision = zeros(3,1);
+
+ctx.update.interval = 1;
 ctx.update.prevI = ctx.i;
 ctx.updateXSpeed = xSpeed;
 

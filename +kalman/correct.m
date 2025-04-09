@@ -1,6 +1,6 @@
 function ctx = correct(ctx)
 
-z = [ctx.a/norm(ctx.a);ctx.m./norm(ctx.m)];
+z = ctx.a/norm(ctx.a);
 h = get_h(ctx);
 v = z - h;
 
@@ -33,24 +33,24 @@ end
 function h = get_h(ctx)
 
 g = [0; 0; 1];
-r = [sind(ctx.inc);cosd(ctx.lat)*cosd(ctx.inc);-sind(ctx.lat)*cosd(ctx.inc)];
+%r = [sind(ctx.inc);cosd(ctx.lat)*cosd(ctx.inc);-sind(ctx.lat)*cosd(ctx.inc)];
 
-h = kalman.get_h(ctx.q_est, g, r);
+h = kalman.get_h(ctx.q_est, g);
 
 end
 
 function ctx = get_H(ctx)
 
 g = [0; 0; 1];
-r = [sind(ctx.inc);cosd(ctx.lat)*cosd(ctx.inc);-sind(ctx.lat)*cosd(ctx.inc)];
+%r = [sind(ctx.inc);cosd(ctx.lat)*cosd(ctx.inc);-sind(ctx.lat)*cosd(ctx.inc)];
 
-ctx.H = kalman.get_H(ctx.q_est, g, r);
+ctx.H = kalman.get_H(ctx.q_est, g);
 
 end
 
 
 function R = get_R(ctx)
-R = kalman.get_R(ctx.stdDev.a, ctx.stdDev.m);
+R = kalman.get_R(ctx.stdDev.a);
 end
 
 

@@ -36,7 +36,7 @@ if logs_ctx.T(i)-logs_ctx.T(prevI) > logs_ctx.update.interval*logs_ctx.updateXSp
     end
 
 
-    CI = (sqrt(2)*erfcinv(2*(1-0.95)).*sqrt(eulP))';
+    CI = (sqrt(2)*erfcinv(2*(1-0.9)).*sqrt(eulP))';
 
     eulerAng = so3(logs_ctx.q_current(:,prevI:i)',"quat").eul("ZYX");
     
@@ -55,6 +55,10 @@ if logs_ctx.T(i)-logs_ctx.T(prevI) > logs_ctx.update.interval*logs_ctx.updateXSp
     addpoints(logs_ctx.pRoll(1), logs_ctx.T(prevI:i), currentRoll+CI(prevI:i,3));
     addpoints(logs_ctx.pRoll(3), logs_ctx.T(prevI:i), currentRoll-CI(prevI:i,3));
     addpoints(logs_ctx.pRoll(2), logs_ctx.T(prevI:i), logs_ctx.state.roll(prevI:i));
+
+    logs_ctx.statePrecision(1) = logs_ctx.statePrecision(1) + length(find(abs((logs_ctx.state.heading(prevI:i)-currentHeading')) < CI(prevI:i,1)'));
+    logs_ctx.statePrecision(2) = logs_ctx.statePrecision(2) + length(find(abs((logs_ctx.state.pitch(prevI:i)-currentPitch')) < CI(prevI:i,2)'));
+    logs_ctx.statePrecision(3) = logs_ctx.statePrecision(3) + length(find(abs((logs_ctx.state.roll(prevI:i)-currentRoll')) < CI(prevI:i,3)'));
     
     logs_ctx.update.prevI = i;
 
