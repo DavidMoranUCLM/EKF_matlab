@@ -38,8 +38,9 @@ if logs_ctx.T(i)-logs_ctx.T(prevI) > logs_ctx.update.interval*logs_ctx.updateXSp
 
     CI = (sqrt(2)*erfcinv(2*(1-0.9)).*sqrt(eulP))';
 
-    eulerAng = so3(logs_ctx.q_current(:,prevI:i)',"quat").eul("ZYX");
-    
+    %eulerAng = so3(logs_ctx.q_current(:,prevI:i)',"quat").eul("ZYX");
+    eulerAng = utils.quat2eul(logs_ctx.q_current(:,prevI:i));
+
     currentRoll = eulerAng(:,3);
     currentPitch = eulerAng(:,2);
     currentHeading = eulerAng(:,1);

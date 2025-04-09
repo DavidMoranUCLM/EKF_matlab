@@ -32,9 +32,9 @@ end
 
 function ctx = stdDevSet(ctx)
 
-    ctx.stdDev.a = 0.35*0.35;
+    ctx.stdDev.a = 0.5*0.5;
     ctx.stdDev.m = 1.5*1.5;
-    ctx.stdDev.w = 0.2*0.2*[1000 1 1];
+    ctx.stdDev.w = 0.3*0.3*[1 1 1];
 
 end
 

@@ -1,6 +1,6 @@
 function ctx = correct(ctx)
 
-z = ctx.a/norm(ctx.a);
+z = ctx.a;
 h = get_h(ctx);
 v = z - h;
 
